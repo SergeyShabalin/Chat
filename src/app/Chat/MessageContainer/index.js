@@ -1,30 +1,25 @@
 import React, {useContext} from 'react';
-import classes from './MessageContainer.module.css'
-import Footer from "../Footer";
+import { IconButton, Stack, Typography} from "@mui/material";
 import {BiLogOut} from "react-icons/bi";
 import {Context} from "../../Store/Context";
+import Footer from "../Footer";
+import Messages from "./Messages";
 
 export default function MessageContainer() {
 
-    const {allMessages, setAllMessages, logout} = useContext(Context)
-
-    const messages = allMessages.map(message => (<div key={message._id}>
-        <span className={classes.name_user}>{message.name}</span>
-        <span className={classes.message}>{message.text}</span>
-        <span className={classes.date}>{message.time}</span>
-    </div>))
-
+    const {setAllMessages, logout} = useContext(Context)
     const user = sessionStorage.getItem('userName')
 
     return (
-        <div className={classes.container}>
-            <div className={classes.header}>
-                <span>Вы зашли под именем {user}  </span>
-                <div className={classes.logout} onClick={logout}><BiLogOut/></div>
-            </div>
-            <div id='container' className={classes.message_container}>{messages}</div>
+        <Stack bg='#FFFFFF60' position='relative' boxShadow='0.1rem 0 2rem 0.2rem #00000070' padding='1rem' width='80%'
+               borderRadius='10px' height='70%'>
+            <Stack flexDirection="row" justifyContent="space-between" padding='1rem' color='#0f0f77'>
+                <Typography>Вы зашли под именем {user} </Typography>
+                <IconButton aria-label="delete" color="primary" onClick={logout}><BiLogOut/></IconButton>
+            </Stack>
+            <Messages/>
             <Footer setAllArrMessages={setAllMessages}/>
-        </div>
+        </Stack>
     );
 };
 

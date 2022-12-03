@@ -1,20 +1,23 @@
 import React, {useContext, useState} from 'react';
-import {Button, TextField} from "@mui/material";
+import {Button, Stack, TextField, Typography} from "@mui/material";
 import {Context} from "../../Store/Context";
 
-export default function  Auth ( ){
+export default function Auth() {
 
-    const {setPersonName, authorization, saveName} = useContext(Context)
+    const {authValid, authorization, login, getName} = useContext(Context)
 
-    function getName({target}){
-        setPersonName(target.value)
-    }
+
 
     return (
-        <div>
-            <TextField onKeyDown={saveName} onChange={getName} id="standard-basic" label="Введите имя" variant="standard" />
-            <Button onClick ={authorization} variant="contained">Contained</Button>
-        </div>
+        <Stack justifyContent="space-between" padding='20px 40px' boxShadow='0.5rem 0.5rem 5rem 0.5rem #0000004F'>
+            <Typography color='#06063f'>Авторизация</Typography>
+            <Stack padding='10px 0'>
+                <TextField onKeyDown={login} onChange={getName} id="outlined-basic" variant="outlined"
+                           label="Введите имя"/>
+            </Stack>
+            {!authValid ? <Button  disabled  onClick={authorization} variant="contained">Введите имя</Button>
+                : <Button  onClick={authorization} variant="contained">Вход</Button>}
+        </Stack>
     );
 };
 

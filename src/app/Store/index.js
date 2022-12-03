@@ -6,6 +6,7 @@ export default function Store() {
     const [isAuth, setIsAuth] = useState(true)
     const [inputValue, setInputValue] = useState('')
     const [personName, setPersonName] = useState()
+    const [authValid, setAuthValid] = useState(false)
 
     useEffect(() => {
         const name = sessionStorage.getItem('userName')
@@ -26,18 +27,22 @@ export default function Store() {
         window.addEventListener('storage', getAllMessages)
         return () => window.removeEventListener('storage', getAllMessages)
         const elem = document.getElementById('container');
-        window.scrollTo(0, document.body.scrollHeight)
+     //TODO вставить скрол
     }, [])
 
     function saveName(e){
         if (e.keyCode === 13) {
             e.preventDefault()
-            console.log('нажали ентер')
             sendMessage();
         }
     }
 
-    //TODO нет функции авторизации
+    function login(e){
+        if (e.keyCode === 13) {
+            e.preventDefault()
+            authorization();
+        }
+    }
 
     function getValue({target}){
         setInputValue(target.value)
@@ -46,9 +51,9 @@ export default function Store() {
     function sendMessage(){
         const user = sessionStorage.getItem('userName') || ''
         const messages = JSON.parse(localStorage.getItem('messages')) || []
-        const messageTime = format(new Date(), 'p')
+        const messageTime =  new Date()
         const newMessage = {
-            _id: format(new Date(), 'T'),
+            _id: messageTime,
             text: inputValue,
             name: user,
             time: messageTime
@@ -60,7 +65,6 @@ export default function Store() {
     }
 
 
-
     function authorization() {
         sessionStorage.setItem('userName', personName)
         setIsAuth(false)
@@ -69,6 +73,14 @@ export default function Store() {
     function logout() {
         sessionStorage.clear()
         setIsAuth(true)
+        setAuthValid(false)
+    }
+
+    function getName({target}) {
+        if (target.value !== '') {
+            setAuthValid(true)
+        } else setAuthValid(false)
+        setPersonName(target.value)
     }
 
     return {
@@ -82,7 +94,11 @@ export default function Store() {
         sendMessage,
         setPersonName,
         authorization,
-        logout
+        logout,
+        login,
+        setAuthValid,
+        authValid,
+        getName
     };
 };
 
