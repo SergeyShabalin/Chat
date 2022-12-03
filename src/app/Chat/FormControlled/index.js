@@ -3,29 +3,26 @@ import {Button, Stack, TextField} from "@mui/material";
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import SendIcon from '@mui/icons-material/Send';
 
-
 import {useStore} from "../../Store/Context";
-
 
 export default function FormControlled() {
 
-    //TODO icons
-    const {saveName, getValue, inputValue, sendMessage, clearHistory} = useStore()
+    const {onEnterSendMessage, onChangeMessageValue, messageValue, onSendMessage, onClearHistory} = useStore()
 
     return (
-        <Stack padding="1rem 0">
+        <Stack padding="1rem 0 0 0">
             <TextField
                 multiline
-                onKeyDown={saveName}
+                onKeyDown={onEnterSendMessage}
                 label="Напишите сообщение..."
-                onChange={getValue}
-                value={inputValue}
+                onChange={onChangeMessageValue}
+                value={messageValue}
             />
             <Stack flexDirection="row">
-                <Button variant="outlined" color="error" onClick={clearHistory} startIcon={<DeleteForeverIcon/>}>
+                <Button variant="outlined" color="error" onClick={onClearHistory} startIcon={<DeleteForeverIcon/>}>
                     Clear history
                 </Button>
-                <Button fullWidth variant="outlined" onClick={sendMessage} endIcon={<SendIcon/>}>Send</Button>
+                <Button fullWidth variant="outlined" onClick={onSendMessage} endIcon={<SendIcon/>}>Send</Button>
             </Stack>
         </Stack>
     );

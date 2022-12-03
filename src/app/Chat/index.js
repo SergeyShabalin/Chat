@@ -1,18 +1,16 @@
-import React, {useContext} from 'react';
+import React from 'react';
+import {Stack} from "@mui/material";
+
 import MessageContainer from "./MessageContainer";
 import Auth from "./Auth";
-import {Context} from "../Store/Context";
-import {Stack} from "@mui/material";
+import {useStore} from "../Store/Context";
 
 export default function Chat() {
 
-    const {isAuth} = useContext(Context)
-
+    const {isAuth} = useStore();
     return (
         <Stack flexDirection="row" justifyContent="center" alignItems="center" height='100vh'>
-            {isAuth ? <Auth/>
-                : <MessageContainer/>
-            }
+            {isAuth ? <MessageContainer/> : <Auth/>   }
         </Stack>
     );
 };
