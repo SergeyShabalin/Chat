@@ -4,9 +4,8 @@ import {Stack, Typography} from "@mui/material";
 export default function  Message ({_id, time, user, text, name}) {
 
     const hours = new Date(time).toLocaleTimeString()
-    console.log(hours)
     const formatedTime = hours.slice(0, -3)
-    console.log(formatedTime)
+
     return (
         <Stack spacing={1}>
             <Typography
