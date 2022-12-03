@@ -1,21 +1,18 @@
-import React, {  useContext} from 'react';
-import classes from './Chat.module.css'
+import React, {useContext} from 'react';
 import MessageContainer from "./MessageContainer";
 import Auth from "./Auth";
 import {Context} from "../Store/Context";
-
+import {Stack} from "@mui/material";
 
 export default function Chat() {
-
-    // const [personName, setPersonName] = useState()
 
     const {isAuth} = useContext(Context)
 
     return (
-        <div className={classes.chat_wrapper}>
+        <Stack flexDirection="row" justifyContent="center" alignItems="center" height='100vh'>
             {isAuth ? <Auth/>
-                : <MessageContainer/>}
-        </div>
+                : <MessageContainer/>
+            }
+        </Stack>
     );
 };
-

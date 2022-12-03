@@ -1,21 +1,16 @@
-import React, {useState} from "react";
-import classes from './App.module.css'
-import './App.module.css';
-import Chat from "./Chat";
+import {Stack} from "@mui/material";
 import {Context} from "./Store/Context";
+import Chat from "./Chat";
 import Store from "./Store";
-
 
 export default function App() {
 
     const store = Store()
     return (
         <Context.Provider value={store}>
-            <div className={classes.app_wrapper}>
+            <Stack textAlign="center">
                 <Chat/>
-            </div>
+            </Stack>
         </Context.Provider>
     );
 }
-
-

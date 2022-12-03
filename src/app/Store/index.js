@@ -1,5 +1,4 @@
-import React, {useState, useEffect} from 'react';
-import {format} from "date-fns";
+import React, {useState, useEffect, useRef} from 'react';
 
 export default function Store() {
     const [allMessages, setAllMessages] = useState([])
@@ -7,6 +6,7 @@ export default function Store() {
     const [inputValue, setInputValue] = useState('')
     const [personName, setPersonName] = useState()
     const [authValid, setAuthValid] = useState(false)
+    const messageEndRef = useRef()
 
     useEffect(() => {
         const name = sessionStorage.getItem('userName')
@@ -22,36 +22,41 @@ export default function Store() {
         }
     }
 
+    useEffect(()=>{
+        messageEndRef.current?.scrollIntoView()
+    }, [allMessages])
+
+
     useEffect(() => {
         getAllMessages()
         window.addEventListener('storage', getAllMessages)
         return () => window.removeEventListener('storage', getAllMessages)
-        const elem = document.getElementById('container');
-     //TODO вставить скрол
     }, [])
 
-    function saveName(e){
+    function saveName(e) {
         if (e.keyCode === 13) {
             e.preventDefault()
             sendMessage();
         }
     }
 
-    function login(e){
+    function login(e) {
         if (e.keyCode === 13) {
-            e.preventDefault()
-            authorization();
+            if (authValid) {
+                e.preventDefault()
+                authorization();
+            }
         }
     }
 
-    function getValue({target}){
+    function getValue({target}) {
         setInputValue(target.value)
     }
 
-    function sendMessage(){
+    function sendMessage() {
         const user = sessionStorage.getItem('userName') || ''
         const messages = JSON.parse(localStorage.getItem('messages')) || []
-        const messageTime =  new Date()
+        const messageTime = new Date()
         const newMessage = {
             _id: messageTime,
             text: inputValue,
@@ -63,7 +68,6 @@ export default function Store() {
         localStorage.setItem('messages', JSON.stringify(allMessages))
         setInputValue('')
     }
-
 
     function authorization() {
         sessionStorage.setItem('userName', personName)
@@ -98,8 +102,7 @@ export default function Store() {
         login,
         setAuthValid,
         authValid,
-        getName
+        getName,
+        messageEndRef
     };
 };
-
-
