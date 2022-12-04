@@ -7,7 +7,14 @@ import {useStore} from "../../Store/Context";
 
 export default function FormControlled() {
 
-    const {onEnterSendMessage, onChangeMessageValue, messageValue, onSendMessage, onClearHistory} = useStore()
+    const {
+        onEnterSendMessage,
+        onChangeMessageValue,
+        messageValue,
+        onSendMessage,
+        onClearHistory,
+        isValidMessage
+    } = useStore()
 
     return (
         <Stack padding="1rem 0 0 0">
@@ -22,7 +29,15 @@ export default function FormControlled() {
                 <Button variant="outlined" color="error" onClick={onClearHistory} startIcon={<DeleteForeverIcon/>}>
                     Clear history
                 </Button>
-                <Button fullWidth variant="outlined" onClick={onSendMessage} endIcon={<SendIcon/>}>Send</Button>
+                <Button
+                    disabled={!isValidMessage}
+                    fullWidth
+                    variant="outlined"
+                    onClick={onSendMessage}
+                    endIcon={<SendIcon/>}
+                >
+                    Send
+                </Button>
             </Stack>
         </Stack>
     );
