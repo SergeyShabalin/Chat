@@ -1,6 +1,4 @@
-
 import React, {useContext, useRef, useState, useEffect} from "react";
-
 
 const CONSTANTS = {
     userName: 'userName',
@@ -8,13 +6,14 @@ const CONSTANTS = {
 }
 export const Context = React.createContext(null);
 
-export const AppProvider =({children})=>{
+export const AppProvider = ({children}) => {
 
     const [allMessages, setAllMessages] = useState([])
     const [isAuth, setIsAuth] = useState(false)
     const [messageValue, setMessageValue] = useState('')
     const [personName, setPersonName] = useState('')
     const [isValidName, setIsValidName] = useState(false)
+    const [isValidMessage, setIsValidMessage] = useState(false)
     const user = sessionStorage.getItem(CONSTANTS.userName)
     const messageEndRef = useRef()
 
@@ -28,6 +27,7 @@ export const AppProvider =({children})=>{
             setPersonName(user)
             setIsAuth(true)
         }
+
         getStoragePersonName()
 
         getAllMessages()
@@ -47,13 +47,15 @@ export const AppProvider =({children})=>{
     }
 
     function onEnterSendMessage(e) {
-        if (e.keyCode !== 13) return
+        if (e.keyCode !== 13 || !isValidMessage) return
         e.preventDefault();
         onSendMessage();
     }
 
     function onChangeMessageValue({target}) {
         setMessageValue(target.value)
+        if (target.value !== '') setIsValidMessage(true)
+        else setIsValidMessage(false)
     }
 
     function onClearHistory() {
@@ -62,7 +64,6 @@ export const AppProvider =({children})=>{
     }
 
     function onSendMessage() {
-        //TODO allmesages вместо лоакалсторейдж
         const messages = JSON.parse(localStorage.getItem(CONSTANTS.messages)) || []
         const messageTime = new Date()
         const newMessage = {
@@ -74,6 +75,7 @@ export const AppProvider =({children})=>{
         setAllMessages(allMessages)
         localStorage.setItem(CONSTANTS.messages, JSON.stringify(allMessages))
         setMessageValue('')
+        setIsValidMessage(false)
     }
 
     function login(e) {
@@ -111,13 +113,14 @@ export const AppProvider =({children})=>{
         onChangeName,
         messageEndRef,
         user,
-        onClearHistory
+        onClearHistory,
+        isValidMessage
     }
-    return(
+    return (
         <Context.Provider value={store}>
             {children}
         </Context.Provider>
     )
 };
 
- export const useStore =()=> useContext(Context)
+export const useStore = () => useContext(Context)
